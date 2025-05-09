@@ -27,7 +27,6 @@ public class CodeExecutionService {
         try {
             System.out.println("Received execution request with input: " + request.getInput());
             
-          
             Map<String, Object> submissionMap = new HashMap<>();
             submissionMap.put("source_code", request.getCode());
             submissionMap.put("language_id", getLanguageId(request.getLanguage()));
@@ -90,7 +89,7 @@ public class CodeExecutionService {
                 try {
                     executionTime = Double.parseDouble(timeObj.toString());
                 } catch (NumberFormatException e) {
-                    
+                    // Handle parsing error
                 }
             }
             
@@ -103,7 +102,6 @@ public class CodeExecutionService {
                 }
             }
             
-           
             String output = null;
             Object stdoutObj = result.get("stdout");
             if (stdoutObj != null) {
@@ -116,7 +114,6 @@ public class CodeExecutionService {
                 error = stderrObj.toString();
             }
             
-           
             Object compileOutputObj = result.get("compile_output");
             if (compileOutputObj != null && !compileOutputObj.toString().isEmpty()) {
                 error = (error == null) ? compileOutputObj.toString() : error + "\n" + compileOutputObj.toString();
