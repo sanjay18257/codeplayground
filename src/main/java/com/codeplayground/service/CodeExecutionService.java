@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class CodeExecutionService {
-
     private final WebClient.Builder webClientBuilder;
 
     @Value("${judge0.api.key}")
@@ -26,15 +24,13 @@ public class CodeExecutionService {
     public CodeExecutionResponse executeCode(CodeExecutionRequest request) {
         try {
             System.out.println("Received execution request with input: " + request.getInput());
-
             Map<String, Object> submissionMap = new HashMap<>();
             submissionMap.put("source_code", request.getCode());
             submissionMap.put("language_id", getLanguageId(request.getLanguage()));
             submissionMap.put("stdin", request.getInput() != null ? request.getInput() : "");
             submissionMap.put("expected_output", "");
-
             System.out.println("Sending submission to Judge0 with stdin: " + submissionMap.get("stdin"));
-
+            
             // Send to Judge0 API
             var response = webClientBuilder.build()
                     .post()
@@ -55,7 +51,7 @@ public class CodeExecutionService {
             }
 
             String token = (String) response.get("token");
-
+            
             // Add a small delay to allow Judge0 to process the submission
             try {
                 Thread.sleep(1000);
@@ -83,23 +79,29 @@ public class CodeExecutionService {
             // Safely parse numeric values
             Double executionTime = null;
             Long memoryUsage = null;
-
+            
             Object timeObj = result.get("time");
             if (timeObj != null) {
                 try {
-                    executionTime = Double.parseDouble(timeObj.toString());
+                    if (timeObj instanceof Number) {
+                        executionTime = ((Number) timeObj).doubleValue();
+                    } else {
+                        executionTime = Double.parseDouble(timeObj.toString().replace(",", "."));
+                    }
                 } catch (NumberFormatException e) {
-                    // Handle parsing error, possibly log the error or use a default value
                     System.out.println("Error parsing time: " + timeObj);
                 }
             }
-
+            
             Object memoryObj = result.get("memory");
             if (memoryObj != null) {
                 try {
-                    memoryUsage = Long.parseLong(memoryObj.toString());
+                    if (memoryObj instanceof Number) {
+                        memoryUsage = ((Number) memoryObj).longValue();
+                    } else {
+                        memoryUsage = Long.parseLong(memoryObj.toString());
+                    }
                 } catch (NumberFormatException e) {
-                    // Handle parsing error
                     System.out.println("Error parsing memory: " + memoryObj);
                 }
             }
@@ -140,7 +142,6 @@ public class CodeExecutionService {
                     .status(status)
                     .error(error)
                     .build();
-
         } catch (Exception e) {
             e.printStackTrace(); // Log the full stack trace
             return CodeExecutionResponse.builder()
