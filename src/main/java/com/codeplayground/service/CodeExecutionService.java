@@ -27,7 +27,6 @@ public class CodeExecutionService {
         try {
             System.out.println("Received execution request with input: " + request.getInput());
             
-          
             Map<String, Object> submissionMap = new HashMap<>();
             submissionMap.put("source_code", request.getCode());
             submissionMap.put("language_id", getLanguageId(request.getLanguage()));
@@ -81,6 +80,9 @@ public class CodeExecutionService {
                         .build();
             }
             
+            // Log the result to see the returned data
+            System.out.println("Received execution result: " + result);
+            
             // Safely parse numeric values
             Double executionTime = null;
             Long memoryUsage = null;
@@ -90,7 +92,7 @@ public class CodeExecutionService {
                 try {
                     executionTime = Double.parseDouble(timeObj.toString());
                 } catch (NumberFormatException e) {
-                    
+                    System.out.println("Failed to parse execution time: " + timeObj);
                 }
             }
             
@@ -99,11 +101,10 @@ public class CodeExecutionService {
                 try {
                     memoryUsage = Long.parseLong(memoryObj.toString());
                 } catch (NumberFormatException e) {
-                    // Handle parsing error
+                    System.out.println("Failed to parse memory usage: " + memoryObj);
                 }
             }
             
-           
             String output = null;
             Object stdoutObj = result.get("stdout");
             if (stdoutObj != null) {
@@ -116,7 +117,6 @@ public class CodeExecutionService {
                 error = stderrObj.toString();
             }
             
-           
             Object compileOutputObj = result.get("compile_output");
             if (compileOutputObj != null && !compileOutputObj.toString().isEmpty()) {
                 error = (error == null) ? compileOutputObj.toString() : error + "\n" + compileOutputObj.toString();
