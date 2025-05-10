@@ -12,7 +12,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
+  
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<Map<String, String>> handleNoHandlerFoundException(NoHandlerFoundException ex) {
     Map<String, String> response = new HashMap<>();
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     response.put("message", "Endpoint not found: " + ex.getRequestURL());
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
-
+  
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<Map<String, String>> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
     Map<String, String> response = new HashMap<>();
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     response.put("message", "Invalid parameter: " + ex.getName());
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
-
+  
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
     Map<String, String> response = new HashMap<>();

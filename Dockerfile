@@ -1,14 +1,11 @@
-# Use a specific version of OpenJDK (Java 21 in this case)
-FROM eclipse-temurin:21-jdk
-
-# Set the working directory inside the container
+FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the generated .jar file into the container (adjust the filename based on your build)
-COPY target/*.jar app.jar
-
-# Expose the port your Spring Boot app will run on
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Define the command to run the app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
