@@ -1,0 +1,142 @@
+.output-pane {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-surface);
+  border-left: 1px solid var(--light-border);
+}
+.output-header h2 {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+.stats {
+  font-size: var(--font-size-sm);
+}
+
+.stat-label {
+  font-weight: 600;
+}
+
+.output-content pre {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.placeholder-text {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+}
+
+.dark .output-pane {
+  background-color: var(--dark-surface);
+  border-left-color: var(--dark-border);
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--light-border);
+}
+
+.dark .output-header {
+  border-bottom-color: var(--dark-border);
+}
+
+.output-header h2 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-sm);
+}
+
+.stat-label {
+  color: var(--light-text-secondary);
+}
+
+.dark .stat-label {
+  color: var(--dark-text-secondary);
+}
+
+.stat-value {
+  font-weight: 500;
+}
+
+.output-content {
+  flex: 1;
+  padding: var(--space-2);
+  overflow: auto;
+  position: relative;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.placeholder-text {
+  color: var(--light-text-secondary);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.dark .placeholder-text {
+  color: var(--dark-text-secondary);
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 5;
+}
+
+.dark .loading-spinner {
+  background-color: rgba(30, 30, 30, 0.7);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 119, 204, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
